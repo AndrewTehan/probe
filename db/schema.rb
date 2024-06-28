@@ -10,10 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_28_133640) do
+ActiveRecord::Schema.define(version: 2024_06_28_143245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "cashiers", force: :cascade do |t|
+    t.string "name"
+    t.bigint "store_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["store_id"], name: "index_cashiers_on_store_id"
+  end
+
+  create_table "checks", force: :cascade do |t|
+    t.decimal "total_amount", precision: 10, scale: 2
+    t.bigint "customer_id", null: false
+    t.bigint "cashier_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cashier_id"], name: "index_checks_on_cashier_id"
+    t.index ["customer_id"], name: "index_checks_on_customer_id"
+  end
+
+  create_table "customers", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "products", force: :cascade do |t|
     t.string "name", null: false
@@ -56,6 +80,9 @@ ActiveRecord::Schema.define(version: 2024_06_28_133640) do
     t.index ["retail_chain_id"], name: "index_stores_on_retail_chain_id"
   end
 
+  add_foreign_key "cashiers", "stores"
+  add_foreign_key "checks", "cashiers"
+  add_foreign_key "checks", "customers"
   add_foreign_key "stock_items", "products"
   add_foreign_key "stock_items", "stores"
   add_foreign_key "stores", "retail_chains"
