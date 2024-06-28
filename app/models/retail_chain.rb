@@ -1,4 +1,6 @@
 class RetailChain < ApplicationRecord
+  has_many :stores, dependent: :destroy
+
   validates :name, presence: true
   validates :headquarters, presence: true
   validates :ceo, presence: true
