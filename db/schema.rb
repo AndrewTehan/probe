@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_28_123017) do
+ActiveRecord::Schema.define(version: 2024_06_28_133640) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "products", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "retail_chains", force: :cascade do |t|
     t.string "name", null: false
@@ -28,4 +36,27 @@ ActiveRecord::Schema.define(version: 2024_06_28_123017) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "stock_items", force: :cascade do |t|
+    t.bigint "store_id", null: false
+    t.bigint "product_id", null: false
+    t.integer "quantity", default: 0, null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["product_id"], name: "index_stock_items_on_product_id"
+    t.index ["store_id"], name: "index_stock_items_on_store_id"
+  end
+
+  create_table "stores", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "address", null: false
+    t.bigint "retail_chain_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["retail_chain_id"], name: "index_stores_on_retail_chain_id"
+  end
+
+  add_foreign_key "stock_items", "products"
+  add_foreign_key "stock_items", "stores"
+  add_foreign_key "stores", "retail_chains"
 end
