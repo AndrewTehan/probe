@@ -1,7 +1,9 @@
 class CreateCustomers < ActiveRecord::Migration[6.1]
   def change
     create_table :customers do |t|
-      t.string :name
+      t.string :first_name, null: false
+      t.string :last_name, null: false
+      t.string :patronymic, default: ''
 
       t.timestamps
     end
