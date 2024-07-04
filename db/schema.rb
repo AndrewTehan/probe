@@ -16,7 +16,10 @@ ActiveRecord::Schema.define(version: 2024_06_28_143245) do
   enable_extension "plpgsql"
 
   create_table "cashiers", force: :cascade do |t|
-    t.string "name"
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.string "patronymic", default: ""
+    t.string "passport_number", null: false
     t.bigint "store_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -34,7 +37,9 @@ ActiveRecord::Schema.define(version: 2024_06_28_143245) do
   end
 
   create_table "customers", force: :cascade do |t|
-    t.string "name"
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.string "patronymic", default: ""
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -50,7 +55,7 @@ ActiveRecord::Schema.define(version: 2024_06_28_143245) do
   create_table "retail_chains", force: :cascade do |t|
     t.string "name", null: false
     t.string "headquarters", null: false
-    t.string "ceo", null: false
+    t.string "ceo_full_name", null: false
     t.string "website", null: false
     t.string "contact_email", null: false
     t.string "contact_phone", null: false
@@ -72,7 +77,6 @@ ActiveRecord::Schema.define(version: 2024_06_28_143245) do
   end
 
   create_table "stores", force: :cascade do |t|
-    t.string "name", null: false
     t.string "address", null: false
     t.bigint "retail_chain_id", null: false
     t.datetime "created_at", precision: 6, null: false
